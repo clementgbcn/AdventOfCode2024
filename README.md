@@ -13,3 +13,7 @@ Update the `README.md` `Results` section with `python -m main -r`
 
 
 ## Results
+|   Day | Star   |   Result |   Elapsed Time, ms |
+|-------|--------|----------|--------------------|
+|     1 | 1st    |  2580760 |              1.22  |
+|     1 | 2nd    | 25358365 |              0.934 |
