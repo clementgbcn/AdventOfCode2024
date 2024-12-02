@@ -22,7 +22,6 @@ class Day01(Day):
             insort(right_list, values[-1])
         return sum(starmap(lambda a, b: abs(a-b), zip(left_list, right_list)))
 
-
     @staticmethod
     def count_id_2(input_value):
         left_dict = {}
