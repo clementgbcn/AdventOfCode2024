@@ -56,6 +56,16 @@ def process_days(
     result_title = "Result"
     time_title = "Elapsed Time"
     headers = ["Day", "Star", result_title, f"{time_title}, ms"]
+    table = build_table(nb_day, all_days, star, update_readme)
+    result_str = tabulate(table, tablefmt="github", headers=headers)
+
+    # Display results in the console
+    print(result_str)
+    if update_readme:
+        update_results_in_readme(result_str)
+
+
+def build_table(nb_day: int, all_days: bool, star: int, update_readme: bool) -> list[str]:
     table = []
     day_factory = DayFactory(nb_day)
     if not all_days and not update_readme:
@@ -64,7 +74,6 @@ def process_days(
             table.extend(day.process_first_star())
         if star == 2 or star is None:
             table.extend(day.process_second_star())
-
     else:
         for i in range(1, nb_day + 1):
             day = day_factory.get_day(i)
@@ -73,12 +82,7 @@ def process_days(
             table.extend(day.process_second_star())
             if i < nb_day:
                 table.append("")
-
-    result_str = tabulate(table, tablefmt="github", headers=headers)
-    # Display results in the console
-    print(result_str)
-    if update_readme:
-        update_results_in_readme(result_str)
+    return table
 
 
 def update_results_in_readme(results: str):
