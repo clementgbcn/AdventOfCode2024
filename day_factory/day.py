@@ -13,20 +13,20 @@ class Day(ABC):
         self.day_value = int(day_inst.__class__.__name__[-2:])
 
     @abstractmethod
-    def solution_first_star(self, input_value, input_type):
+    def solution_first_star(self, input_value, input_type) -> int:
         return 0
 
     @abstractmethod
-    def solution_second_star(self, input_value, input_type):
+    def solution_second_star(self, input_value, input_type) -> int:
         return 0
 
-    def process_first_star(self):
+    def process_first_star(self) -> list[list[any]]:
         return self.process_star(Star.FIRST)
 
-    def process_second_star(self):
+    def process_second_star(self) -> list[list[any]]:
         return self.process_star(Star.SECOND)
 
-    def solution_star(self, star, input_value, input_type):
+    def solution_star(self, star, input_value, input_type) -> int:
         if star == Star.FIRST:
             return self.solution_first_star(input_value, input_type=input_type)
         elif star == Star.SECOND:
@@ -34,7 +34,7 @@ class Day(ABC):
         else:
             raise UnknownStarException(star)
 
-    def process_star(self, star):
+    def process_star(self, star) -> list[list[any]]:
         # Run the test
         test_case = InputParser(self.day_value, TestEnum.TEST, star).get_iterator()
         test_result = self.solution_star(star, test_case, TestEnum.TEST)

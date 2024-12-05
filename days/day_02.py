@@ -1,4 +1,7 @@
+from typing import List
+
 from day_factory.day import Day
+from day_factory.day_utils import TestEnum
 from utils.utils import extract_int
 
 
@@ -10,7 +13,7 @@ class Day02(Day):
         super().__init__(self)
 
     @staticmethod
-    def valid_report(report, tolerate_error=False):
+    def valid_report(report: List[str], tolerate_error: bool = False) -> int:
         increasing_level = report[0] < report[1]
         for idx in range(len(report) - 1):
             diff = report[idx + 1] - report[idx]
@@ -35,13 +38,13 @@ class Day02(Day):
         return True
 
     @staticmethod
-    def check_reports(input_value):
+    def check_reports(input_value: List[str]) -> int:
         return sum(
             map(lambda x: 1 if Day02.valid_report(extract_int(x)) else 0, input_value)
         )
 
     @staticmethod
-    def check_reports_2(input_value):
+    def check_reports_2(input_value: List[str]) -> int:
         return sum(
             map(
                 lambda x: 1 if Day02.valid_report(extract_int(x), True) else 0,
@@ -49,8 +52,8 @@ class Day02(Day):
             )
         )
 
-    def solution_first_star(self, input_value, input_type):
+    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
         return self.check_reports(input_value)
 
-    def solution_second_star(self, input_value, input_type):
+    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
         return self.check_reports_2(input_value)

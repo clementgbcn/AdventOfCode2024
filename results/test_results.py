@@ -26,11 +26,11 @@ def check_results(input_type: TestEnum) -> None:
                 ), f"Day{day_idx} for Star {star} with {input_type.name} input failed, {result} != {expected_result}"
 
 
-def test_test_results():
+def test_test_results() -> None:
     check_results(TestEnum.TEST)
 
 
-def test_problem_results():
+def test_problem_results() -> None:
     if os.path.exists("inputs/problems"):
         check_results(TestEnum.PROBLEM)
     else:

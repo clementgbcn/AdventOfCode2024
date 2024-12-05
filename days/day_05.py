@@ -1,4 +1,7 @@
+from typing import List, Dict, Set
+
 from day_factory.day import Day
+from day_factory.day_utils import TestEnum
 from utils.utils import extract_int
 
 
@@ -10,7 +13,7 @@ class Day05(Day):
         super().__init__(self)
 
     @staticmethod
-    def compute_program(input_value):
+    def compute_program(input_value: List[str]) -> int:
         rules = Day05.extract_rules(input_value)
         total = 0
         for line in input_value:
@@ -20,7 +23,7 @@ class Day05(Day):
         return total
 
     @staticmethod
-    def compute_program_2(input_value):
+    def compute_program_2(input_value: List[str]) -> int:
         rules = Day05.extract_rules(input_value)
         total = 0
         for line in input_value:
@@ -36,7 +39,7 @@ class Day05(Day):
         return total
 
     @staticmethod
-    def extract_rules(input_value):
+    def extract_rules(input_value: List[str]) -> Dict[int, Set[int]]:
         rules = {}
         for line in input_value:
             if line == "":
@@ -48,7 +51,7 @@ class Day05(Day):
         return rules
 
     @staticmethod
-    def is_invalid(updates, rules):
+    def is_invalid(updates: List[int], rules: Dict[int, Set[int]]):
         encountered_updates = set()
         for update in updates:
             encountered_updates.add(update)
@@ -60,8 +63,8 @@ class Day05(Day):
             return True
         return False
 
-    def solution_first_star(self, input_value, input_type):
+    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
         return self.compute_program(input_value)
 
-    def solution_second_star(self, input_value, input_type):
+    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
         return self.compute_program_2(input_value)

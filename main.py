@@ -32,7 +32,7 @@ def process_days(
     all_days: bool = False,
     download_input: bool = False,
     update_readme: bool = False,
-):
+) -> None:
     nb_day = 0
     if day is not None:
         nb_day = day
@@ -65,7 +65,9 @@ def process_days(
         update_results_in_readme(result_str)
 
 
-def build_table(nb_day: int, all_days: bool, star: int, update_readme: bool) -> list[str]:
+def build_table(
+    nb_day: int, all_days: bool, star: int, update_readme: bool
+) -> list[str]:
     table = []
     day_factory = DayFactory(nb_day)
     if not all_days and not update_readme:
@@ -85,7 +87,7 @@ def build_table(nb_day: int, all_days: bool, star: int, update_readme: bool) -> 
     return table
 
 
-def update_results_in_readme(results: str):
+def update_results_in_readme(results: str) -> None:
     new_results_section_started = False
     with open("README.md", "r+") as file:
         lines = file.readlines()

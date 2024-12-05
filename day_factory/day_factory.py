@@ -1,5 +1,7 @@
 import importlib
 
+from day_factory.day import Day
+
 
 class DayFactory:
     class DayChallengeException(Exception):
@@ -14,7 +16,7 @@ class DayFactory:
     def __init__(self, max_day):
         self.max_day = max_day
 
-    def get_day(self, day_value):
+    def get_day(self, day_value) -> Day:
         if day_value > self.max_day:
             raise DayFactory.DayChallengeException(day_value, self.max_day)
         day_name = f"Day{day_value:02}"

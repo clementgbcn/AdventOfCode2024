@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Iterable, List
 
 from day_factory.day_utils import TestEnum
 
@@ -15,7 +16,7 @@ class InputParser:
         self.filepath = None
         self.build_file_path()
 
-    def build_file_path(self):
+    def build_file_path(self) -> None:
         input_type_folder = InputParser.FOLDER / Path(
             f"{self.input_type.name.lower()}s"
         )
@@ -27,12 +28,12 @@ class InputParser:
         self.filename = f"{self.day}.txt"
         self.filepath = input_type_folder / Path(self.filename)
 
-    def get_iterator(self):
+    def get_iterator(self) -> Iterable[str]:
         with open(self.filepath, "r") as f:
             for line in f:
                 yield line[:-1] if line[-1] == "\n" else line
 
-    def get_table(self):
+    def get_table(self) -> List[str]:
         res = []
         with open(self.filepath, "r") as f:
             for line in f:

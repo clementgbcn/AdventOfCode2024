@@ -1,4 +1,7 @@
+from typing import List
+
 from day_factory.day import Day
+from day_factory.day_utils import TestEnum
 
 
 class Day04(Day):
@@ -12,7 +15,7 @@ class Day04(Day):
         super().__init__(self)
 
     @staticmethod
-    def search_word(table, i, j):
+    def search_word(table: List[str], i: int, j: int) -> int:
         if table[i][j] != Day04.WORD[0]:
             return 0
         total = 0
@@ -36,7 +39,7 @@ class Day04(Day):
         return total
 
     @staticmethod
-    def compute_program(input_value):
+    def compute_program(input_value: List[str]) -> int:
         table = [line for line in input_value]
         total = 0
         for i in range(len(table)):
@@ -45,7 +48,7 @@ class Day04(Day):
         return total
 
     @staticmethod
-    def compute_program_2(input_value):
+    def compute_program_2(input_value: List[str]) -> int:
         table = [line for line in input_value]
         total = 0
         for i in range(1, len(table) - 1):
@@ -62,8 +65,8 @@ class Day04(Day):
                     total += 1
         return total
 
-    def solution_first_star(self, input_value, input_type):
+    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
         return self.compute_program(input_value)
 
-    def solution_second_star(self, input_value, input_type):
+    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
         return self.compute_program_2(input_value)
