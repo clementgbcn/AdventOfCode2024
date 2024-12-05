@@ -1,7 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-IFS=$'\n\t'
-
-export PATH="$HOME/.local/bin:$PATH"
-
-printf "%s\n" "$@" |  xargs black
