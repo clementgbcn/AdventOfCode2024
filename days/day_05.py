@@ -50,18 +50,15 @@ class Day05(Day):
     @staticmethod
     def is_invalid(updates, rules):
         encountered_updates = set()
-        is_invalid = False
         for update in updates:
             encountered_updates.add(update)
-            if update not in rules:
-                continue
-            for constraint in list(rules[update]):
+            for constraint in rules.get(update, set()):
                 if constraint in encountered_updates:
-                    is_invalid = True
                     break
-            if is_invalid:
-                break
-        return is_invalid
+            else:
+                continue
+            return True
+        return False
 
     def solution_first_star(self, input_value, input_type):
         return self.compute_program(input_value)
