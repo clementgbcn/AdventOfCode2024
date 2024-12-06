@@ -180,9 +180,6 @@ class Day06(Day):
                 ):
                     return False
                 next_i = col[idx] - 1 if di == 1 else col[idx - 1] + 1
-                x, y = (i + 1, next_i) if di == 1 else (next_i + 1, i)
-                for k in range(x, y):
-                    visited_oriented.add((k, j, di, dj))
                 guard = (next_i, j, 0, -di)
             else:
                 row = obstructions_rows.get(i, list())
@@ -194,9 +191,6 @@ class Day06(Day):
                 ):
                     return False
                 next_j = row[idx] - 1 if dj == 1 else row[idx - 1] + 1
-                x, y = (j + 1, next_j) if dj == 1 else (next_j + 1, j)
-                for k in range(x, y):
-                    visited_oriented.add((i, k, di, dj))
                 guard = (i, next_j, dj, 0)
         return True
 
