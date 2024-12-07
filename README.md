@@ -26,6 +26,10 @@ export DD_SERVICE="advent-of-code-2024"
 export DD_ENV="prod"
 export DD_VERSION=0.1.0
 export DD_TRACE_AGENT_URL=http://localhost:8136
+export DD_GIT_COMMIT_SHA=$(git rev-parse HEAD)
+export DD_GIT_REPOSITORY_URL=$(git config --get remote.origin.url | sed -e 's/:/\//' -e 's/^git@/https:\/\//' -e 's/\.git$//') 
+export DD_PROFILING_ENABLE_CODE_PROVENANCE=true
+export DD_PROFILING_STACK_V2_ENABLED=true
 ddtrace-run -p python -m main -a
 ```
 
