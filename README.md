@@ -19,6 +19,16 @@ python -m coverage html
 open htmlcov/index.html
 ```
 
+# Running Datadog Agent
+
+```
+export DD_SERVICE="advent-of-code-2024"
+export DD_ENV="prod"
+export DD_VERSION=0.1.0
+export DD_TRACE_AGENT_URL=http://localhost:8136
+ddtrace-run -p python -m main -a
+```
+
 ## Summary
 ![Results](https://github.com/clementgbcn/AdventOfCode2024/actions/workflows/check_results.yml/badge.svg)
 

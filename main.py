@@ -3,6 +3,7 @@ import importlib
 from pathlib import Path
 from typing import Optional
 
+import json_log_formatter
 from ddtrace import patch
 from tabulate import tabulate
 
@@ -135,6 +136,11 @@ if __name__ == "__main__":
     stream_handler.setLevel(log_level)
     logger.addHandler(stream_handler)
 
+    json_handler = logging.FileHandler(filename="/tmp/aoc.log")
+    json_handler.setFormatter(json_log_formatter.JSONFormatter())
+    json_handler.setLevel(log_level)
+    logger.addHandler(json_handler)
+
     logger.info("Starting Advent of Code 2024")
 
     process_days(
@@ -144,3 +150,5 @@ if __name__ == "__main__":
         download_input=args.input,
         update_readme=args.readme,
     )
+
+    logger.info("Advent of Code 2024 finished")
