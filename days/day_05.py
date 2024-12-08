@@ -1,7 +1,8 @@
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Iterable
 
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 from utils.utils import extract_int
 
 
@@ -13,20 +14,22 @@ class Day05(Day):
         super().__init__(self)
 
     @staticmethod
-    def compute_program(input_value: List[str]) -> int:
-        rules = Day05.extract_rules(input_value)
+    def compute_program(input_value: InputParser) -> int:
+        values = input_value.get_iterator()
+        rules = Day05.extract_rules(values)
         total = 0
-        for line in input_value:
+        for line in values:
             updates = extract_int(line)
             if not Day05.is_invalid(updates, rules):
                 total += updates[len(updates) // 2]
         return total
 
     @staticmethod
-    def compute_program_2(input_value: List[str]) -> int:
-        rules = Day05.extract_rules(input_value)
+    def compute_program_2(input_value: InputParser) -> int:
+        values = input_value.get_iterator()
+        rules = Day05.extract_rules(values)
         total = 0
-        for line in input_value:
+        for line in values:
             updates = extract_int(line)
             if not Day05.is_invalid(updates, rules):
                 continue
@@ -39,7 +42,7 @@ class Day05(Day):
         return total
 
     @staticmethod
-    def extract_rules(input_value: List[str]) -> Dict[int, Set[int]]:
+    def extract_rules(input_value: Iterable[str]) -> Dict[int, Set[int]]:
         rules = {}
         for line in input_value:
             if line == "":
@@ -63,8 +66,12 @@ class Day05(Day):
             return True
         return False
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program(input_value)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program_2(input_value)

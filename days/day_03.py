@@ -1,9 +1,9 @@
 import re
 from functools import reduce
-from typing import List
 
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 from utils.utils import extract_int
 
 
@@ -19,25 +19,29 @@ class Day03(Day):
         super().__init__(self)
 
     @staticmethod
-    def compute_program(input_value: List[str]) -> int:
+    def compute_program(input_value: InputParser) -> int:
         total = 0
-        for program_line in input_value:
+        for program_line in input_value.get_iterator():
             for op in re.compile(Day03.MUL_INSTRUCTION).findall(program_line):
                 total += reduce(lambda x, y: x * y, extract_int(op))
         return total
 
     @staticmethod
-    def compute_program_2(input_value: List[str]) -> int:
+    def compute_program_2(input_value: InputParser) -> int:
         total = 0
-        for split_op in "".join(input_value).split(Day03.DO_INSTRUCTION):
+        for split_op in "".join(input_value.get_iterator()).split(Day03.DO_INSTRUCTION):
             for op in re.compile(Day03.MUL_INSTRUCTION).findall(
                 split_op.split(Day03.DONT_INSTRUCTION)[0]
             ):
                 total += reduce(lambda x, y: x * y, extract_int(op))
         return total
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program(input_value)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program_2(input_value)

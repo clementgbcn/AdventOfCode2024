@@ -13,11 +13,11 @@ class Day(ABC):
         self.day_value = int(day_inst.__class__.__name__[-2:])
 
     @abstractmethod
-    def solution_first_star(self, input_value, input_type) -> int:
+    def solution_first_star(self, input_value: InputParser, input_type) -> int:
         return 0
 
     @abstractmethod
-    def solution_second_star(self, input_value, input_type) -> int:
+    def solution_second_star(self, input_value: InputParser, input_type) -> int:
         return 0
 
     def process_first_star(self) -> list[list[any]]:
@@ -26,7 +26,7 @@ class Day(ABC):
     def process_second_star(self) -> list[list[any]]:
         return self.process_star(Star.SECOND)
 
-    def solution_star(self, star, input_value, input_type) -> int:
+    def solution_star(self, star: Star, input_value: InputParser, input_type) -> int:
         if star == Star.FIRST:
             return self.solution_first_star(input_value, input_type=input_type)
         elif star == Star.SECOND:
@@ -34,9 +34,9 @@ class Day(ABC):
         else:
             raise UnknownStarException(star)
 
-    def process_star(self, star) -> list[list[any]]:
+    def process_star(self, star: Star) -> list[list[any]]:
         # Run the test
-        test_case = InputParser(self.day_value, TestEnum.TEST, star).get_iterator()
+        test_case = InputParser(self.day_value, TestEnum.TEST, star)
         test_result = self.solution_star(star, test_case, TestEnum.TEST)
         expected_result = (
             self.FIRST_STAR_TEST_RESULT
@@ -48,7 +48,7 @@ class Day(ABC):
         ), f"Test failed for {star} star at Day {self.day_value}: {test_result} != {expected_result}"
         # Compute the result
         start_input_time = time.time_ns()
-        input_case = InputParser(self.day_value, TestEnum.PROBLEM, star).get_iterator()
+        input_case = InputParser(self.day_value, TestEnum.PROBLEM, star)
         input_result = self.solution_star(star, input_case, TestEnum.PROBLEM)
         end_input_time = (time.time_ns() - start_input_time) / 1000000
         return [
@@ -57,6 +57,6 @@ class Day(ABC):
 
     def get_result(self, star, input_type) -> Result:
         # Run the test
-        test_case = InputParser(self.day_value, input_type, star).get_iterator()
+        test_case = InputParser(self.day_value, input_type, star)
         test_result = self.solution_star(star, test_case, input_type)
         return Result(self.day_value, input_type, star, test_result)

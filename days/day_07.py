@@ -1,7 +1,6 @@
-from typing import List
-
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 from utils.utils import extract_int
 
 
@@ -36,16 +35,20 @@ class Day07(Day):
         return False
 
     @staticmethod
-    def compute_calibration(input_value: List[str], support_pipe=False) -> int:
+    def compute_calibration(input_value: InputParser, support_pipe=False) -> int:
         total = 0
-        for line in input_value:
+        for line in input_value.get_iterator():
             v = extract_int(line)
             if Day07.compute_recursive(v[0], v[1:], support_pipe):
                 total += v[0]
         return total
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_calibration(input_value, False)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_calibration(input_value, True)

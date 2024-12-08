@@ -2,6 +2,7 @@ from typing import List, Dict, Tuple
 
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 
 
 class Day08(Day):
@@ -13,18 +14,18 @@ class Day08(Day):
 
     @staticmethod
     def parse_antennas(
-        input_value: List[str],
+        input_value: InputParser,
     ) -> Tuple[int, int, Dict[str, List[complex]]]:
         antennas = {}
         x, y = 0, 0
-        for x, line in enumerate(input_value):
+        for x, line in enumerate(input_value.get_iterator()):
             for y, c in enumerate(line):
                 if c != ".":
                     antennas[c] = antennas.get(c, []) + [x + y * 1j]
         return x, y, antennas
 
     @staticmethod
-    def compute_calibration(input_value: List[str]) -> int:
+    def compute_calibration(input_value: InputParser) -> int:
         max_x, max_y, antennas = Day08.parse_antennas(input_value)
         antinodes = set()
         for antenna, pos in antennas.items():
@@ -48,7 +49,7 @@ class Day08(Day):
             x += v
 
     @staticmethod
-    def compute_calibration_2(input_value: List[str]) -> int:
+    def compute_calibration_2(input_value: InputParser) -> int:
         max_x, max_y, antennas = Day08.parse_antennas(input_value)
         antinodes = set()
         for antenna, pos in antennas.items():
@@ -59,8 +60,12 @@ class Day08(Day):
                     Day08.add_antinodes(pos[b], -v, max_x, max_y, antinodes)
         return len(antinodes)
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_calibration(input_value)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_calibration_2(input_value)

@@ -1,8 +1,8 @@
 from bisect import insort, bisect
-from typing import List
 
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 
 
 class Guard:
@@ -44,10 +44,10 @@ class Day06(Day):
         super().__init__(self)
 
     @staticmethod
-    def extract_data(input_value: List[str]):
+    def extract_data(input_value: InputParser):
         obstructions = []
         guard = None
-        for i, line in enumerate(input_value):
+        for i, line in enumerate(input_value.get_iterator()):
             current_line = []
             for j, c in enumerate(line[::]):
                 if c == "^":
@@ -73,13 +73,13 @@ class Day06(Day):
         return guard.didj in visited.get(guard.ij, set()), visited
 
     @staticmethod
-    def compute_program(input_value: List[str]) -> int:
+    def compute_program(input_value: InputParser) -> int:
         obstructions, guard = Day06.extract_data(input_value)
         _, visited = Day06.compute_visited(obstructions, guard)
         return len(visited)
 
     @staticmethod
-    def compute_program_2(input_value: List[str]) -> int:
+    def compute_program_2(input_value: InputParser) -> int:
         obstructions, guard = Day06.extract_data(input_value)
         visited = Day06.compute_visited(obstructions, guard)[1]
         del visited[guard.ij]
@@ -93,13 +93,13 @@ class Day06(Day):
         return total
 
     @staticmethod
-    def extract_advanced_data(input_line):
+    def extract_advanced_data(input_line: InputParser):
         obstructions_rows = {}
         obstructions_columns = {}
         max_i = 0
         max_j = 0
         guard = None
-        for i, line in enumerate(input_line):
+        for i, line in enumerate(input_line.get_iterator()):
             max_i = i
             for j, c in enumerate(line[::]):
                 if c == "#":
@@ -153,7 +153,7 @@ class Day06(Day):
                 guard = (i, next_j, dj, 0)
 
     @staticmethod
-    def compute_program_fast(input_value: List[str]) -> int:
+    def compute_program_fast(input_value: InputParser) -> int:
         obstructions_rows, obstructions_columns, max_i, max_j, guard = (
             Day06.extract_advanced_data(input_value)
         )
@@ -195,7 +195,7 @@ class Day06(Day):
         return True
 
     @staticmethod
-    def compute_program_2_fast(input_value: List[str]) -> int:
+    def compute_program_2_fast(input_value: InputParser) -> int:
         obstructions_rows, obstructions_columns, max_i, max_j, guard = (
             Day06.extract_advanced_data(input_value)
         )
@@ -230,8 +230,12 @@ class Day06(Day):
                 del obstructions_columns[v[1]]
         return total
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program_fast(input_value)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program_2_fast(input_value)

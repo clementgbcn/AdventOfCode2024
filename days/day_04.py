@@ -2,6 +2,7 @@ from typing import List
 
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 
 
 class Day04(Day):
@@ -39,8 +40,8 @@ class Day04(Day):
         return total
 
     @staticmethod
-    def compute_program(input_value: List[str]) -> int:
-        table = [line for line in input_value]
+    def compute_program(input_value: InputParser) -> int:
+        table = input_value.get_table()
         total = 0
         for i in range(len(table)):
             for j in range(len(table[0])):
@@ -48,8 +49,8 @@ class Day04(Day):
         return total
 
     @staticmethod
-    def compute_program_2(input_value: List[str]) -> int:
-        table = [line for line in input_value]
+    def compute_program_2(input_value: InputParser) -> int:
+        table = input_value.get_table()
         total = 0
         for i in range(1, len(table) - 1):
             for j in range(1, len(table[0]) - 1):
@@ -65,8 +66,12 @@ class Day04(Day):
                     total += 1
         return total
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program(input_value)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.compute_program_2(input_value)

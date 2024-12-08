@@ -1,9 +1,9 @@
 from bisect import insort
 from itertools import starmap
-from typing import List
 
 from day_factory.day import Day
 from day_factory.day_utils import TestEnum
+from utils.input_parser import InputParser
 from utils.utils import extract_int
 
 
@@ -15,20 +15,20 @@ class Day01(Day):
         super().__init__(self)
 
     @staticmethod
-    def count_id(input_value: List[str]) -> int:
+    def count_id(input_value: InputParser) -> int:
         left_list = []
         right_list = []
-        for line in input_value:
+        for line in input_value.get_iterator():
             values = extract_int(line)
             insort(left_list, values[0])
             insort(right_list, values[-1])
         return sum(starmap(lambda a, b: abs(a - b), zip(left_list, right_list)))
 
     @staticmethod
-    def count_id_2(input_value: List[str]) -> int:
+    def count_id_2(input_value: InputParser) -> int:
         left_dict = {}
         right_dict = {}
-        for line in input_value:
+        for line in input_value.get_iterator():
             values = extract_int(line)
             left_dict[values[0]] = left_dict.get(values[0], 0) + 1
             right_dict[values[-1]] = right_dict.get(values[-1], 0) + 1
@@ -39,8 +39,12 @@ class Day01(Day):
             )
         )
 
-    def solution_first_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_first_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.count_id(input_value)
 
-    def solution_second_star(self, input_value: List[str], input_type: TestEnum) -> int:
+    def solution_second_star(
+        self, input_value: InputParser, input_type: TestEnum
+    ) -> int:
         return self.count_id_2(input_value)
