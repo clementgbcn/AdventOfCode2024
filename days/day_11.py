@@ -20,10 +20,12 @@ class Day11(Day):
             return 1
         if value == 0:
             return Day11.compute(1, stone - 1)
-        if len(str(value)) % 2 == 0:
-            return Day11.compute(
-                int(str(value)[0 : len(str(value)) // 2]), stone - 1
-            ) + Day11.compute(int(str(value)[len(str(value)) // 2 :]), stone - 1)
+        s = str(value)
+        if len(s) % 2 == 0:
+            ls = len(s) // 2
+            return Day11.compute(int(s[0:ls]), stone - 1) + Day11.compute(
+                int(s[ls:]), stone - 1
+            )
         return Day11.compute(value * 2024, stone - 1)
 
     @staticmethod
