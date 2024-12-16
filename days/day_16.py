@@ -20,6 +20,7 @@ class Day16(Day):
     @staticmethod
     def build_graph(input_value: InputParser):
         maze = {}
+        i, j = 0, 0
         for j, line in enumerate(input_value.get_iterator()):
             for i, c in enumerate(line):
                 maze[i + j * 1j] = c
