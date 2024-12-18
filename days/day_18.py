@@ -26,7 +26,7 @@ class Day18(Day):
         return coord
 
     @staticmethod
-    def dfs(corrupted, size):
+    def bfs(corrupted, size):
         start = 0
         q = [(start, None)]
         prev_mapping = {}
@@ -59,21 +59,40 @@ class Day18(Day):
         coord = Day18.extract_input(input_value)
         size = 70 if input_type == TestEnum.PROBLEM else 6
         nb = 1024 if input_type == TestEnum.PROBLEM else 12
-        return len(Day18.dfs(set(coord[:nb]), size))
+        return len(Day18.bfs(set(coord[:nb]), size))
 
     @staticmethod
-    def compute_robots_2(input_value: InputParser, input_type) -> int:
+    def compute_robots_inc(input_value: InputParser, input_type) -> int:
         coord = Day18.extract_input(input_value)
         size = 70 if input_type == TestEnum.PROBLEM else 6
         # We know it works for part 1
         cutoff = 1024 if input_type == TestEnum.PROBLEM else 12
-        path = Day18.dfs(set(coord[:cutoff]), size)
+        path = Day18.bfs(set(coord[:cutoff]), size)
         while path is not None:
             while coord[cutoff] not in set(path):
                 cutoff += 1
-            path = Day18.dfs(set(coord[: cutoff + 1]), size)
+            path = Day18.bfs(set(coord[: cutoff + 1]), size)
         print(coord[cutoff])
         return cutoff
+
+    @staticmethod
+    def compute_robots_dichotomy(input_value: InputParser, input_type) -> int:
+        coord = Day18.extract_input(input_value)
+        size = 70 if input_type == TestEnum.PROBLEM else 6
+        low = 0
+        high = len(coord)
+        while low + 1 < high:
+            mid = (low + high) // 2
+            path = Day18.bfs(set(coord[:mid]), size)
+            if path is None:
+                high = mid
+            else:
+                low = mid
+        if Day18.bfs(set(coord[: high + 1]), size) is not None:
+            return high + 1
+        if Day18.bfs(set(coord[:high]), size) is not None:
+            return high
+        return high - 1
 
     def solution_first_star(
         self, input_value: InputParser, input_type: TestEnum
@@ -83,4 +102,4 @@ class Day18(Day):
     def solution_second_star(
         self, input_value: InputParser, input_type: TestEnum
     ) -> int:
-        return self.compute_robots_2(input_value, input_type)
+        return self.compute_robots_dichotomy(input_value, input_type)
