@@ -28,26 +28,30 @@ class Day18(Day):
     @staticmethod
     def dfs(corrupted, size):
         start = 0
-        visited = set()
-        q = [(start, [start])]
-        path = None
+        q = [(start, None)]
+        prev_mapping = {}
         while len(q) > 0:
             p, prev = q.pop(0)
-            if p == size + size * 1j:
-                path = prev
-                break
-            if p in visited:
+            if p in prev_mapping:
                 continue
-            visited.add(p)
+            prev_mapping[p] = prev
+            if p == size + size * 1j:
+                break
             for d in [1, -1, 1j, -1j]:
                 nxt = p + d
                 if (
-                    not (0 <= nxt.real <= size and 0 <= nxt.imag <= size)
-                    or nxt in visited
-                    or nxt in corrupted
+                    (0 <= nxt.real <= size and 0 <= nxt.imag <= size)
+                    and nxt not in prev_mapping
+                    and nxt not in corrupted
                 ):
-                    continue
-                q.append((nxt, prev + [nxt]))
+                    q.append((nxt, p))
+        if prev_mapping.get(size + size * 1j, None) is None:
+            return None
+        current = size + size * 1j
+        path = [current]
+        while prev_mapping[current] != 0:
+            current = prev_mapping[current]
+            path += [current]
         return path
 
     @staticmethod
@@ -55,7 +59,7 @@ class Day18(Day):
         coord = Day18.extract_input(input_value)
         size = 70 if input_type == TestEnum.PROBLEM else 6
         nb = 1024 if input_type == TestEnum.PROBLEM else 12
-        return len(Day18.dfs(set(coord[:nb]), size)) - 1
+        return len(Day18.dfs(set(coord[:nb]), size))
 
     @staticmethod
     def compute_robots_2(input_value: InputParser, input_type) -> int:
