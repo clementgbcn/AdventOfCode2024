@@ -57,7 +57,18 @@ class Day20(Day):
     ) -> int:
         start, end, max_i, max_j, walls = Day20.extract_input(input_value)
         distance = Day20.get_distances(start, end, walls)
-        queue = [(start, 0, None)]
+        area = set()
+        for y in range(-cheat_time, cheat_time + 1):
+            for x in range(-cheat_time + abs(y), cheat_time + 1 - abs(y)):
+                if x == 0 and y == 0:
+                    continue
+                nxt = start + x + y * 1j
+                if nxt in walls or not (
+                    0 <= nxt.real <= max_i and 0 <= nxt.imag <= max_j
+                ):
+                    continue
+                area.add(nxt)
+        queue = [(start, 0, None, area)]
         res = {}
         time_saved = test_upper_bound if input_type == TestEnum.TEST else 100
         upper_bound = distance[start] - time_saved + 1
@@ -67,33 +78,33 @@ class Day20(Day):
             if c[1] + abs(dist.real) + abs(dist.imag) >= upper_bound:
                 # Remaining distance too big
                 continue
-            if c[0] == end:
-                if c[1] < upper_bound:
-                    res[distance[start] - c[1]] = res.get(distance[start] - c[1], 0) + 1
-                continue
-            for y in range(-cheat_time, cheat_time + 1):
-                for x in range(-cheat_time + abs(y), cheat_time + 1 - abs(y)):
-                    if x == 0 and y == 0:
-                        continue
-                    nxt = c[0] + x + y * 1j
-                    if nxt in walls or not (
-                        0 <= nxt.real <= max_i and 0 <= nxt.imag <= max_j
-                    ):
-                        continue
-                    dist = c[1] + abs(y) + abs(x) + distance[nxt]
-                    if dist < upper_bound:
-                        res[distance[start] - dist] = (
-                            res.get(distance[start] - dist, 0) + 1
-                        )
+            for p in c[3]:
+                delta = p - c[0]
+                dist = c[1] + abs(delta.real) + abs(delta.imag) + distance[p]
+                if dist < upper_bound:
+                    res[distance[start] - dist] = res.get(distance[start] - dist, 0) + 1
             for d in [1, -1, 1j, -1j]:
                 nxt = c[0] + d
-                if nxt == c[2]:
-                    continue
-                if nxt in walls or not (
-                    0 <= nxt.real <= max_i and 0 <= nxt.imag <= max_j
+                if (
+                    nxt == c[2]
+                    or nxt in walls
+                    or not (0 <= nxt.real <= max_i and 0 <= nxt.imag <= max_j)
                 ):
                     continue
-                queue.append((nxt, c[1] + 1, c[0]))
+                area = c[3].copy()
+                area.add(c[0])
+                area.remove(nxt)
+                for k in range(cheat_time + 1):
+                    for coeff in [-1, 1]:
+                        area.discard(c[0] - d * (k + coeff * (cheat_time - k) * 1j))
+                        tmp = nxt + d * (k + coeff * (cheat_time - k) * 1j)
+                        if (
+                            tmp not in walls
+                            and 0 <= tmp.real <= max_i
+                            and 0 <= tmp.imag <= max_j
+                        ):
+                            area.add(tmp)
+                queue.append((nxt, c[1] + 1, c[0], area))
         return sum(res.values())
 
     def solution_first_star(
